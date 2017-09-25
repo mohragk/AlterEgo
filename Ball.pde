@@ -117,8 +117,7 @@ class Ball
     if ( pos.y < r  && dir.y < 0 )
     {
       float pan = map(pos.x, 0, width, -0.75, 0.75);
-      wallHit.setPan(pan);
-      wallHit.trigger();
+      wallHit.play();
       dir.y *= -1;
       pos = prevPos;
     }
@@ -129,8 +128,7 @@ class Ball
     if ( pos.x < r + border && dir.x < 0 )
     {
       float pan = map(pos.x, 0, width, -0.75, 0.75);
-      wallHit.setPan(pan);
-      wallHit.trigger();
+      wallHit.play();
       dir.x *= -1;
        pos = prevPos;
     }
@@ -138,8 +136,7 @@ class Ball
     if ( pos.x + r > width - border && dir.x > 0 )
     {
       float pan = map(pos.x, 0, width, -0.75, 0.75);
-      wallHit.setPan(pan);
-      wallHit.trigger();
+      wallHit.play();
       dir.x *= -1;
        pos = prevPos;
     }
@@ -158,7 +155,7 @@ class Ball
             if (dir.y > 0 )
             {
               
-              paddleHit.trigger();
+              paddleHit.play();
               float diff = pos.x - (pad.pos.x + pad.w / 2);
               float angle = map(diff, -pad.w / 2, pad.w / 2, radians(225), radians(315));
               dir.x = cos(angle);
@@ -193,8 +190,7 @@ class Ball
      if ( d < r + b.r){
        float pan = map(pos.x, 0, width, -0.75, 0.75);
        
-       ballHitsBall.setPan(pan);
-       ballHitsBall.trigger();
+       ballHitsBall.play();
        pos = prevPos;
        dir.x *= -1;
        dir.y *= -1;

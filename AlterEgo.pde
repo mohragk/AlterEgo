@@ -1,18 +1,13 @@
-
-
-import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-import ddf.minim.signals.*;
-import ddf.minim.spi.*;
-import ddf.minim.ugens.*;
+import processing.sound.*;
 
 
 
-Minim minim;
-AudioSample blockHit, paddleHit, wallHit, ballLost, ballHitsBall;
-AudioPlayer intro_audio, loop_audio, tail_audio, intro2_audio, loop2_audio;
-AudioInput input;
+
+
+
+SoundFile blockHit, paddleHit, wallHit, ballLost, ballHitsBall;
+SoundFile alter_track, ego_track;
+
 
 
 
@@ -100,19 +95,15 @@ void reset()
   paddle = new Paddle();
   
   //load sounds
-  minim = new Minim(this);
-  blockHit = minim.loadSample("ark blockHit.wav");
-  wallHit = minim.loadSample("ark wallHit.wav");
-  paddleHit = minim.loadSample("ark paddleHit.wav");
-  ballLost = minim.loadSample("ark ballLost.wav");
-  ballHitsBall = minim.loadSample("ark ballHitsBall.wav");
   
-  intro_audio = minim.loadFile("intro.wav");
-  loop_audio = minim.loadFile("loop.wav");
-  tail_audio = minim.loadFile("tail.wav");
+  blockHit = new SoundFile(this, "ark blockHit.wav");
+  wallHit =  new SoundFile(this, "ark wallHit.wav");
+  paddleHit =  new SoundFile(this, "ark paddleHit.wav");
+  ballLost =  new SoundFile(this, "ark ballLost.wav");
+  ballHitsBall =  new SoundFile(this, "ark ballHitsBall.wav");
   
-  intro2_audio = minim.loadFile("intro2.wav");
-  loop2_audio = minim.loadFile("loop2.wav");
+  ego_track   = new SoundFile(this, "ego_track.wav");
+  alter_track = new SoundFile(this, "alter_track.wav");
 //tail2_audio = minim.loadFile("tail2.wav");
  
   frames = gridRows * gridCols;
@@ -187,8 +178,7 @@ void checkBlockHits(Ball b)
       //println(blocks.get(i).m);
       blocks.get(i).top.intersects(b);
       float pan = map(b.pos.x, 0, width, -0.75, 0.75);
-      blockHit.setPan(pan);
-      blockHit.trigger();
+      blockHit.play();
       blocks.remove(i);
     }
   }
@@ -322,7 +312,7 @@ void draw()
       
       if (ballA.OOB )
       {
-        ballLost.trigger();
+        ballLost.play();
         numBallsA--;
         if (numBallsA > 0)
         {
@@ -352,7 +342,7 @@ void draw()
       
       if (ballB.OOB )
       {
-        ballLost.trigger();
+        ballLost.play();
         numBallsB--;
         if (numBallsB > 0)
         {
@@ -413,12 +403,10 @@ void draw()
      
      if (introplayed == false)
      {
-       intro_audio.play();
+       alter_track.play();
        introplayed = true;
      }
-       
-     if ( intro_audio.length() <= intro_audio.position() && loop_audio.isLooping() == false )
-        loop_audio.loop();
+    
      
      
      alpha += 0.6;
@@ -436,12 +424,10 @@ void draw()
     
      if (introplayed == false)
      {
-       intro2_audio.play();
+       ego_track.play();
        introplayed = true;
      }
      
-     if ( intro2_audio.length() <= intro2_audio.position() && loop2_audio.isLooping() == false )
-        loop2_audio.loop();
        
      background(255);
      paddle = null;
